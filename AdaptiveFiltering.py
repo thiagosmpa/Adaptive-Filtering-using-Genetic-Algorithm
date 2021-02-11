@@ -119,13 +119,13 @@ yfiltered_butterworth = bandPassFilter(x)
 
 
 # =============================================================================
-# Filtro adaptativo
+# Implementing the Adaptive Filter
 # =============================================================================
 
-
-file = open('myvars.rtf', 'rb')
-dict = pickle.load(file)
-w_m = dict ['w_m']
+# Loading coeffs file
+# file = open('myvars.rtf', 'rb')
+# dict = pickle.load(file)
+# w_m = dict ['w_m']
 
 
 
@@ -138,14 +138,18 @@ w = [1, 1, 1, 1]
 y_adaptive_filtered = np.zeros(N)
 
 afilter = af.adaptiveFilt(x, ecg, w)
-x_m = afilter.matrixzation()
-
-for i in range (N):
-    y_adaptive_filtered[i] = np.sum(x_m[i] * w_m[i])
 
 
-# run = af.AdaptiveRun(x, ecg, w)
-# y_adaptive_filtered , w_m = run.run()
+# Uncomment this part if you loaded the coeff's file and comment the next two lines: "run = af.Adaptive... y_adaptive_filtered..."
+# x_m = afilter.matrixzation()
+# for i in range (N):
+#     y_adaptive_filtered[i] = np.sum(x_m[i] * w_m[i])
+
+
+run = af.AdaptiveRun(x, ecg, w)
+y_adaptive_filtered , w_m = run.run()
+
+# Saving coeffs in a file
 # dict = {'w_m': w_m}
 # file = open('myvars.rtf', 'wb')
 # pickle.dump(dict, file)
@@ -184,27 +188,27 @@ fft_theo3 = 2*np.abs(fft_vals3/4800)
 fft_vals4 = fft(y_adaptive_filtered)
 fft_theo4 = 2*np.abs(fft_vals4/4800)
 
-# plt.figure()
-# fig, (ax1, ax2, ax3) = plt.subplots(3)
-# fig.suptitle('FFTs - Não Contaminado / Contaminado / Filtrado / Adaptativo (*625Hz)')
+plt.figure()
+fig, (ax1, ax2, ax3) = plt.subplots(3)
+fig.suptitle('FFTs - Não Contaminado / Contaminado / Filtrado / Adaptativo (*625Hz)')
 
-# ax1.plot(freqs[mask], fft_theo2[mask])
-# ax1.set_xlim(0, 0.01)
-# ax1.set_ylim(0, 2.5)
+ax1.plot(freqs[mask], fft_theo2[mask])
+ax1.set_xlim(0, 0.01)
+ax1.set_ylim(0, 2.5)
 
-# ax2.plot(freqs[mask], fft_theo[mask])
-# ax2.set_xlim(0, 0.01)
-# ax2.set_ylim(0, 2.5)
+ax2.plot(freqs[mask], fft_theo[mask])
+ax2.set_xlim(0, 0.01)
+ax2.set_ylim(0, 2.5)
 
-# ax3.plot(freqs[mask], fft_theo3[mask])
-# ax3.set_xlim(0, 0.01)
-# ax3.set_ylim(0, 2.5)
-# plt.show()
+ax3.plot(freqs[mask], fft_theo3[mask])
+ax3.set_xlim(0, 0.01)
+ax3.set_ylim(0, 2.5)
+plt.show()
 
-# ax4.plot(freqs[mask], fft_theo4[mask])
-# ax4.set_xlim(0, 0.5)
-# ax4.set_ylim(0, 1.2)
-# plt.show()
+ax4.plot(freqs[mask], fft_theo4[mask])
+ax4.set_xlim(0, 0.5)
+ax4.set_ylim(0, 1.2)
+plt.show()
 
 
 
@@ -311,14 +315,14 @@ snr_y_adaptativo = psignal_y_adaptativo / psignal_noise
 snrdb_y_adaptativo = psignaldb_y_adaptativo / psignaldb_noise
 snr_medio_y_adaptativo = np.mean(psignal_y_adaptativo) / np.mean(psignal_noise)
 
-# plt.figure()
-# fig, (ax1, ax2, ax3, ax4) = plt.subplots(4)
-# ax1.plot(t ,snr_ecg)
-# ax2.plot(t, snr_x)
-# ax3.plot(t, snr_yfiltered_butterworth)
-# ax4.plot(t, snr_y_adaptativo)
-# fig.suptitle('SNRdb - ECG Não Contaminado / Contaminado / Filtrado / Adaptativo')
-# plt.show()
+plt.figure()
+fig, (ax1, ax2, ax3, ax4) = plt.subplots(4)
+ax1.plot(t ,snr_ecg)
+ax2.plot(t, snr_x)
+ax3.plot(t, snr_yfiltered_butterworth)
+ax4.plot(t, snr_y_adaptativo)
+fig.suptitle('SNRdb - ECG Não Contaminado / Contaminado / Filtrado / Adaptativo')
+plt.show()
 
 
 print ("SNR medio ECG: ", snr_medio_ecg)
@@ -328,40 +332,8 @@ print ('SNR medio Y Filtrado (Adaptativo): ', snr_medio_y_adaptativo)
 
 
 
-# plt.plot(freqs[mask], fft_theo4[mask])
-# plt.title('Transformada de fourier de Y usando o filtro adaptativo')
-# plt.show()
-
-
-
-# =============================================================================
-# Implementing Evolutionary Algorythm
-# =============================================================================
-
-#Primeiro Passo: Codificação
-#Segundo Passo: Definição da População Inicial
-#Terceiro Passo: Operadores Genéticos:
-    #Tipo de mutação ()
-    #Taxa de mutação
-    #Tipo de crossover
-    #Taxa de crossover
-    #Tipo de seleção
-#Avaliação de Aptidão (Fitness)
-
-
-#A avaliação de aptidão será feita por meio do snr_medio do sinal 
-#(Quanto mais próximo de 1.06, melhor)
-
-
-
-
-# plt.figure()
-# plt.plot(t, y_adaptive_filtered)
-# plt.show()
-
-
-
-# O sinal pára quando atualiza os M primeiros do sinal de entrada, pois assim,
-# O sinal de saída fica do mesmo tamanho do sinal de entrada
+plt.plot(freqs[mask], fft_theo4[mask])
+plt.title('Transformada de fourier de Y usando o filtro adaptativo')
+plt.show()
 
 
