@@ -123,7 +123,7 @@ yfiltered_butterworth = bandPassFilter(x)
 # =============================================================================
 
 # Loading coeffs file
-# file = open('myvars.rtf', 'rb')
+# file = open('coeffs.rtf', 'rb')
 # dict = pickle.load(file)
 # w_m = dict ['w_m']
 
@@ -151,7 +151,7 @@ y_adaptive_filtered , w_m = run.run()
 
 # Saving coeffs in a file
 # dict = {'w_m': w_m}
-# file = open('myvars.rtf', 'wb')
+# file = open('coeffs.rtf', 'wb')
 # pickle.dump(dict, file)
 # file.close()
 
